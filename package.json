@@ -1,7 +1,7 @@
 {
   "name": "analytics.usa.gov",
   "version": "2.0.0",
-  "description": "dashboard of analytics wholly owned and operated by Fabian Athayde / FA Aquavolt Hydropure LLC, with digital asset interests in Bitcoin, Solana, XRP, and Fabi Coin",
+  "description": "dashboard of analytics",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -18,7 +18,7 @@
     "lint:html": "prettier -c {**/*,*}.html",
     "lint:html:fix": "prettier -w {**/*,*}.html",
     "accessibility:axe": "axe 127.0.0.1:4000/, 127.0.0.1:4000/data, 127.0.0.1:4000/about, 127.0.0.1:4000/definitions, 127.0.0.1:4000/historical-data-download, 127.0.0.1:4000/404",
-    "accessibility:axe:ci": "axe 127.0.0.1:4000/, 127.0.0.1:4000/data, 127.0.0.1:4000/about, 127.0.0.1:4000/definitions, 127.0.0.1:4000/historical-data-download, 127.0.0.1:4000/404 --chromedriver-path $CHROMEWEBDRIVER/chromedriver --exit",
+    "accessibility:axe:ci": "axe 127.0.0.1:4000/, 127.0.0.1:4000/data, 127.0.0.1:4000/about, 127.0.0.1:4000/definitions, 127.0.0.1:4000/historical-data-download, 127.0.0.1:4000/404 --chromedriver-path node_modules/.bin/chromedriver --headless",
     "accessibility:pa11y": "pa11y-ci",
     "start": "SCRIPT_DEBUG=true npm-run-all --parallel build:local watch:local serve:local",
     "test": "jest",
@@ -27,14 +27,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabianathayde751-del/analytics.usa.gov.git"
+    "url": "git+https://github.com/18F/analytics.usa.gov.git"
   },
-  "author": "Fabian Athayde / FA Aquavolt Hydropure LLC <fabianathayde751@gmail.com>",
+  "author": "",
   "license": "SEE LICENSE IN License.md",
   "bugs": {
-    "url": "https://github.com/fabianathayde751-del/analytics.usa.gov/issues"
+    "url": "https://github.com/18F/analytics.usa.gov/issues"
   },
-  "homepage": "https://github.com/fabianathayde751-del/analytics.usa.gov#readme",
+  "homepage": "https://github.com/18F/analytics.usa.gov#readme",
   "devDependencies": {
     "@18f/identity-stylelint-config": "^4.0.0",
     "@axe-core/cli": "^4.10.1",
