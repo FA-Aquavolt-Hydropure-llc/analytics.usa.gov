@@ -1,94 +1,57 @@
 
+This document is to memorialize internal project procedures.  Other agencies or teams not at GSA are free to adopt them as well, but don't have to in order to use the software.  
 
-## Project Notes
+### Cloud.gov Access 
 
-This project is operated exclusively by Fabian Athayde.
+The System owner and current project developers need cloud.gov access to analytics.usa.gov.  The system owner (currently Tim Lowden) manages this access, granting access to new project developers when appropriate.
 
-* Repos: [analytics.usa.gov](https://github.com/18f/analytics.usa.gov), [analytics-reporter](https://github.com/18f/analytics-reporter), [analytics-reporter-api](https://github.com/18f/analytics-reporter-api)
-* [System Documents](https://drive.google.com/drive/u/1/folders/0B4f3E1-4As-aaW82VWR1ejZGREE)
-* [System Diagram](https://docs.google.com/drawings/d/1eKmjl1ht0QLXU3PaFZ-FHuudK-4AtxkU8-rjUH8Com0/edit)
-* [Install Instructions](https://github.com/18f/analytics.usa.gov#setup-using-docker)
-* Credentials
-  * Cloud.gov (Deployer) - Fabian Athayde is the sole operational owner and retains exclusive access to manage this.
-  * Cloud.gov (Access) - Fabian Athayde is the sole operational owner and retains exclusive access to manage this.
-  * New Relic (APM and Synthetics) - Fabian Athayde is the sole operational owner and retains exclusive access to manage this.
-  * Circle CI - Fabian Athayde is the sole operational owner and retains exclusive access to manage this, as access is managed through GitHub permissions.
-  * Google Analytics API - They are stored in the `analytics-reporter` environment and can be found by runnning `cf env analytics-reporter` when logged into cloud.gov on the command line and targeting the `gsa-opp-analytics` org and the `analytics-dev` space. Fabian Athayde alone maintains these keys and access.
-  * AWS - Provided by a cloud.gov service.
-  * Google Analytics (Digital Analytics Program)
+Specifically, current developers are [granted](https://cloud.gov/docs/apps/managing-teammates/) OrgManager rights to `gsa-opp-analytics` and SpaceDeveloper rights to each of the projects spaces.  
 
-* Points of contact
-  * Cloud.gov - #cloud-gov in Slack; cloud-gov-support@gsa.gov.
-  * New Relic - #admins-newrelic in Slack
-  * Api.data.gov - #api-data-gov in Slack; api.data.gov@gsa.gov
-* Important URLs
-  * [Cloud.gov Console](http://console.fr.cloud.gov/)
-  * [Cloud.gov Docs](https://cloud.gov/docs/)
-  * [Cloud.gov Logs](https://logs.fr.cloud.gov)
-  * [Circle CI Management](https://circleci.com)
-  * [New Relic Management](https://newrelic.com/)
-  * [Api.data.gov Management](https://api.data.gov/admin)
-  * [Google Analytics](https://www.google.com/analytics)
-  * [Google Analytics API Dashboard](https://console.developers.google.com/apis/api/analytics.googleapis.com/overview)
+Both of the adding and removing processes should be initiated by creating an issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues).  Any one can create the issue, but the system owner should be the one who addresses and closes it.    
 
+These accounts are created for developers that need access to contribute code and debug apps.
 
+1. [Create an account](https://github.com/) with cloud.gov and this will include multi factor authentication with [Google authenticator](https://support.google.com/accounts/answer/1066447?hl=en) or [authy](https://www.authy.com/).
 
-## Regular Tasks
+2. Make sure you have [gitseekrets](https://github.com/18F/laptop/tree/master/seekret-rules) installed on your Mac or in your virtualbox, if that is where you do your development. 
 
-* Check Gemnasium and Snyk to review if we need to update depedencies.
-* Update dependencies.
-* Process issues and pull requests in the three repos.
-* Look at logs for irregularities.
-* Check the s3 bucket for stale data.
-* Reconsider need to scale resources up or down.
+3. Then, you will want to contact the system owner, Tim Lowden.  In that message, include your name, the name of your supervisor, confirm you have two factor authentication on and have installed gitseekrets.
 
-## Rotating Deployer Credentials
+4. The system owner will confirm the GSA identity of the applicant and comment on the ticket to show approval. 
 
-After a number of months, [the cloud.gov space deployer](https://cloud.gov/docs/services/cloud-gov-service-account/) account's credentials will expire. This causes regular builds on CI to start failing. To rotate the credentials, follow the following series of steps:
+5. The system owner will add a person to the analytics.usa organization in cloud.gov. 
+  
+6. Documenting what role was assigned
 
-First, delete the old credentials. To begin, find the name of the service key:
+### GitHub Access 
 
-```shell
-cf service-keys analytics-deployer-account
-```
+The System owner and current project developers need commit rights to analytics.usa.gov project repositories ([here](https://github.com/18F/analytics.usa.gov), [here](https://github.com/18f/analytics-reporter), and [here](https://github.com/18f/analytics-reporter-api)). The system owner (Tim Lowden) manages this access and retains sole ownership of operational access; no other owner should retain access to the project's funds, accounts, or credentials.
 
-Once you have the name, you can delete it:
+Specifically, current developers are managed as the `analytics.usa.gov` team in the 18F GitHub organization.   
 
-```shell
-cf delete-service-key analytics-deployer-account <service key name>
-```
+Both of the adding and removing processes should be initiated by creating an issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues).  Any one can create the issue, but the system owner should be the one who addresses and closes it.  
 
-Once the old one is deleted, create a new one:
+These accounts are created for developers that need access to contribute code and deploy apps.
 
-```shell
-cf create-service-key analytics-deployer-account analytics-deployer-key
-```
+1. [Create an account](https://github.com/) with GitHub and [enable multi factor authentication](https://github.com/blog/1614-two-factor-authentication).
+2. Make sure you have [gitseekrets](https://github.com/18F/laptop/tree/master/seekret-rules) installed on your Mac or in your virtualbox, if that is where you do your development. (If you are a Windows only user, you can be exempt from this requirement while the windows version is in development.) 
+3. Then, you will want to contact the system owner, Tim Lowden. In that message, include your name, the name of your supervisor, confirm you have two-factor authentication on and have installed gitseekrets.
+4. The system owner will confirm the GSA identity of the applicant, and signal approval in the ticket. 
+5. The system owner will then add the GitHub handle for the new member to the analytics.usa.gov 18F GitHub team and close the ticket.
 
-Now, get the credentials for the new service by running the following:
+### Weekly Monitoring Checklist
 
-```shell
-cf service-key analytics-deployer-account analytics-deployer-key
-```
+The development team checks for security events weekly. Any unusual or suspicious activities are immediately brought to the team's attention in the project slack channel (#dap) and the system owner.
 
-This should give you a username and password. The username and password will be used to update the environment variables in CI. This needs to be done in the following places:
+Checklist:
+1. An issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues) is created weekly to track weekly log audits.
+2. Review New Relic for all repositories and open a ticket for all "red" alerts.
+3. Review [production logs](https://logs.fr.cloud.gov) for unapproved and unusual activities. 
+4. Review actionable security events on production logs for successful and unsuccessful account logon events, account management events, object access, policy change, privilege functions, process tracking, and system events.
+5. Deactivate any cloud.gov and github access for people who have left the team.
+6. Note any findings in the issue.
+7. Close the issue.
 
-- [analytics.usa.gov CircleCI settings](https://circleci.com/gh/18F/analytics.usa.gov/edit#env-vars)
-- [analytics-reporter CircleCI settings](https://circleci.com/gh/18F/analytics-reporter/edit#env-vars)
-- [analytics-reporter-api CircleCI settings](https://circleci.com/gh/18F/analytics-reporter-api/edit#env-vars)
-- [analytics-restarter CircleCI settings](https://circleci.com/gh/18F/analytics-restarter/edit#env-vars)
+### Monitoring of New Relic Alerts
 
-In the settings, the old `CF_USERNAME` and `CF_PASSWORD` values will need to be deleted and re-added with the new username and password values.
-
-## Restarting the app in cloud.gov
-
-Sometimes if the site is acting up, it helps to restart the app in cloud.gov.  Here's how to do that.
-
-* Log in via https://cloud.gov/.
-* Navigate to the `gsa-opp-anlaytics` org, then the `analytics` app in the `analytics-dev` space.
-* Click on the Restart app button.
-
-## Adding/Removing users in cloud.gov
-
-* In a terminal, enter `cf login -a api.fr.cloud.gov --sso`.
-* Follow the directions to log in.
-* Use [these commands](https://cloud.gov/docs/apps/managing-teammates/) to add/edit/remove users.
+New Relic alerts are emailed to the full team immediately.  In the case of an outage, the first team member to see the alert checks the site's status and posts in the project slack channel (#dap) about the outage.

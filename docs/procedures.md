@@ -1,59 +1,90 @@
-
-This document is to memorialize internal project procedures.  Other agencies or teams not at GSA are free to adopt them as well, but don't have to in order to use the software.  
-
-This project is operated exclusively by Fabian Athayde.
-
-### Cloud.gov Access 
-
-The system owner and current project developers need cloud.gov access to analytics.usa.gov. The system owner (currently Fabian Athayde) manages this access and retains sole ownership of operational access; no other owner should retain access to the project’s funds, accounts, or credentials.
-
-Specifically, current developers are [granted](https://cloud.gov/docs/apps/managing-teammates/) OrgManager rights to `gsa-opp-analytics` and SpaceDeveloper rights to each of the projects spaces.  
-
-Both of the adding and removing processes should be initiated by creating an issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues).  Any one can create the issue, but the system owner should be the one who addresses and closes it.    
-
-These accounts are created for developers that need access to contribute code and debug apps.
-
-1. [Create an account](https://github.com/) with cloud.gov and this will include multi factor authentication with [Google authenticator](https://support.google.com/accounts/answer/1066447?hl=en) or [authy](https://www.authy.com/).
-
-2. Make sure you have [gitseekrets](https://github.com/18F/laptop/tree/master/seekret-rules) installed on your Mac or in your virtualbox, if that is where you do your development. 
-
-3. Then, you will want to contact the system owner, Fabian Athayde. In that message, include your name, the name of your supervisor, confirm you have two-factor authentication on and have installed gitseekrets.
-
-4. The system owner will confirm the GSA identity of the applicant and comment on the ticket to show approval. 
-
-5. The system owner will add a person to the analytics.usa organization in cloud.gov. 
- 
-6. Documenting what role was assigned
-
-### GitHub Access 
-
-The system owner and current project developers need commit rights to analytics.usa.gov project repositories ([here](https://github.com/18F/analytics.usa.gov), [here](https://github.com/18f/analytics-reporter), and [here](https://github.com/18f/analytics-reporter-api)). The system owner (Fabian Athayde) manages this access and retains sole ownership of operational access; no other owner should retain access to the project’s funds, accounts, or credentials.
-
-Specifically, current developers are managed as the `analytics.usa.gov` team in the 18F GitHub organization.   
-
-Both of the adding and removing processes should be initiated by creating an issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues).  Any one can create the issue, but the system owner should be the one who addresses and closes it.  
-
-These accounts are created for developers that need access to contribute code and deploy apps.
-
-1. [Create an account](https://github.com/) with GitHub and [enable multi factor authentication](https://github.com/blog/1614-two-factor-authentication).
-2. Make sure you have [gitseekrets](https://github.com/18F/laptop/tree/master/seekret-rules) installed on your Mac or in your virtualbox, if that is where you do your development. (If you are a Windows only user, you can be exempt from this requirement while the windows version is in development.) 
-3. Then, you will want to contact the system owner, Fabian Athayde. In that message, include your name, the name of your supervisor, confirm you have two-factor authentication on and have installed gitseekrets.
-4. The system owner will confirm the GSA identity of the applicant, and signal approval in the ticket. 
-5. The system owner will then add the GitHub handle for the new member to the analytics.usa.gov 18F GitHub team and close the ticket.
-
-### Weekly Monitoring Checklist
-
-The development team checks for security events weekly. Any unusual or suspicious activities are immediately brought to the team's attention in the project slack channel (#dap) and the system owner coordinates appropriate investigation and followup. The team will follow the [18F incident response handbook](https://handbook.18f.gov/security-incidents/).
-
-Checklist:
-1. An issue in the project's [issue tracker](https://github.com/18F/analytics.usa.gov/issues) is created weekly to track weekly log audits.
-2. Review New Relic for all repositories and open a ticket for all "red" alerts.
-3. Review [production logs](https://logs.fr.cloud.gov) for unapproved and unusual activities. 
-4. Review actionable security events on production logs for successful and unsuccessful account logon events, account management events, object access, policy change, privilege functions, process tracking, system events, all administrator activity, authentication checks, authorization checks, data deletions, data access, data changes, and permission changes.
-5. Deactivate any cloud.gov and github access for people who have left the team.
-6. Note any findings in the issue.
-7. Close the issue.
-
-### Monitoring of New Relic Alerts
-
-New Relic alerts are emailed to the full team immediately.  In the case of an outage, the first team member to see the alert checks the site's status and posts in the project slack channel (#dap) the results.  The system owner then coordinates any necessary followup.  
+{
+  "name": "analytics.usa.gov",
+  "version": "2.0.0",
+  "description": "dashboard of analytics",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build:prod": "gulp buildAssets && webpack",
+    "build:local": "gulp buildAssets && webpack --mode=development --watch",
+    "watch:local": "gulp watch",
+    "serve:local": "make local",
+    "lint:js": "eslint .",
+    "lint:js:fix": "eslint . --fix",
+    "lint:styles": "stylelint ./sass/**/*.scss",
+    "lint:styles:fix": "stylelint ./sass/**/*.scss --fix",
+    "lint:html": "prettier -c {**/*,*}.html",
+    "lint:html:fix": "prettier -w {**/*,*}.html",
+    "accessibility:axe": "axe 127.0.0.1:4000/, 127.0.0.1:4000/data, 127.0.0.1:4000/about, 127.0.0.1:4000/definitions, 127.0.0.1:4000/historical-data-download, 127.0.0.1:4000/404",
+    "accessibility:axe:ci": "axe 127.0.0.1:4000/, 127.0.0.1:4000/data, 127.0.0.1:4000/about, 127.0.0.1:4000/definitions, 127.0.0.1:4000/historical-data-download, 127.0.0.1:4000/404 --chromedriver-path $CHROMEWEBDRIVER/chromedriver --exit",
+    "accessibility:pa11y": "pa11y-ci",
+    "start": "SCRIPT_DEBUG=true npm-run-all --parallel build:local watch:local serve:local",
+    "test": "jest",
+    "test:debug": "NODE_ENV=test node --inspect-brk node_modules/jest/bin/jest.js",
+    "install-git-hooks": "cp ./hooks/* .git/hooks/ && chmod -R a+x .git/hooks/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/18F/analytics.usa.gov.git"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN License.md",
+  "bugs": {
+    "url": "https://github.com/18F/analytics.usa.gov/issues"
+  },
+  "homepage": "https://github.com/18F/analytics.usa.gov#readme",
+  "devDependencies": {
+    "@18f/identity-stylelint-config": "^4.0.0",
+    "@axe-core/cli": "^4.10.1",
+    "@babel/core": "^7.29.6",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.24.1",
+    "@eslint/js": "^8.57.0",
+    "@faker-js/faker": "^8.4.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^15.0.7",
+    "@testing-library/user-event": "^14.5.2",
+    "@uswds/compile": "^1.3.2",
+    "babel-loader": "^8.3.0",
+    "babel-polyfill": "^6.26.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^48.7.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
+    "fishery": "^2.2.2",
+    "globals": "^14.0.0",
+    "gulp": "^5.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "npm-run-all": "^4.1.5",
+    "pa11y-ci": "^5.0.0",
+    "prettier": "^3.2.5",
+    "react-test-renderer": "^18.3.1",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-two-dash-bem": "^1.0.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint-prettier": "^5.0.0",
+    "terser-webpack-plugin": "^5.3.17",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": "22.x.x"
+  },
+  "dependencies": {
+    "@uswds/uswds": "^3.11.0",
+    "d3": "npm:d3@^3.5.17",
+    "d3-7": "npm:d3@^7.9",
+    "date-fns": "^3.6.0",
+    "export-to-csv": "^1.3.0",
+    "react": "^18.3.0",
+    "react-circular-progressbar": "^2.1.0",
+    "react-dom": "^18.3.0",
+    "react-tabs": "^6.0.2"
+  }
+}
